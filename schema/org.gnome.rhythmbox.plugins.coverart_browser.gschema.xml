@@ -2,12 +2,12 @@
 <schemalist>
     <schema path="/org/gnome/rhythmbox/plugins/coverart_browser/" id="org.gnome.rhythmbox.plugins.coverart_browser">
         <key type="i" name="cover-size">
-            <default>120</default>
+            <default>140</default>
             <summary>Covers size in pixels.</summary>
             <description>Defines the size for the covers showed on the source.</description>
         </key>
         <key type="b" name="add-shadow">
-            <default>true</default>
+            <default>false</default>
             <summary>Add shadow to album's covers</summary>
             <description>Indicates if the albums should drop a shadow on the cover view</description>
         </key>
@@ -42,7 +42,7 @@
             <description>This is the maximum allowed size for an album's name before being ellipsized.</description>
         </key>
         <key type="u" name="display-font-size">
-            <default>8</default>
+            <default>9</default>
             <summary>Text font size</summary>
             <description>This is font size for the album text below the cover-art.</description>
         </key>
@@ -63,7 +63,7 @@
         </key>
         <key type="s" name="sort-by-artist">
           <default>'name_artist'</default>
-            <summary>sort by artist albums</summary>
+            <summary>sort by criteria for artist albums</summary>
             <description>Sort by criteria for artist albums.</description>
         </key>
         <key type="b" name="sort-order-artist">
@@ -127,17 +127,17 @@
             <description>Plugin toggles this to indicate a new genre - it has no real meaning other than to fire a signal when the state is changed.</description>
         </key>
         <key type="i" name="icon-padding">
-            <default>3</default>
+            <default>6</default>
             <summary>icon view item-padding</summary>
             <description>icon view item-padding</description>
         </key>
         <key type="i" name="icon-spacing">
-            <default>3</default>
+            <default>12</default>
             <summary>icon view spacing (rows and columns)</summary>
             <description>icon view (rows and columns)</description>
         </key>
         <key type="b" name="icon-automatic">
-            <default>true</default>
+            <default>false</default>
             <summary>Open and close track-view on click.</summary>
             <description>When clicking the iconview automatically show or hide the track-view</description>
         </key>
