@@ -31,15 +31,15 @@
 
 /* Windows Media Player-style album library */
 iconview.view {
-  -GtkIconView-item-padding: 6;
-  -GtkIconView-row-spacing: 20;
+  -GtkIconView-item-padding: 8;
+  -GtkIconView-row-spacing: 22;
   -GtkIconView-column-spacing: 18;
-  padding: 4px;
+  padding: 6px;
 }
 
 iconview.view:selected,
 iconview.view:selected:focus {
-  border-radius: 4px;
+  border-radius: 6px;
   outline: none;
 }
 
