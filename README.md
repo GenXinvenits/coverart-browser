@@ -1,153 +1,90 @@
-# coverart-browser - v2.1.2 (Penfold)
+# CoverArt Browser
 
-Browse your coverart albums in Rhythmbox v3 and later.  
+CoverArt Browser is a Rhythmbox plugin for browsing and playing albums through their cover artwork.
 
- - rhythmbox 2.96 - 2.99: https://github.com/fossfreedom/coverart-browser/tree/release-1.2
+This fork is maintained for **Rhythmbox 3.4.9** and is intended for modern manual, per-user installation.
 
-![Imgur](http://i.imgur.com/tTnHbE1.png)
+## Compatibility
 
------------
+- **Rhythmbox 3.4.9**
+- Rhythmbox 3.x with the APIs used by this fork may also work, but Rhythmbox 3.4.9 is the target version.
+- This fork is **not intended for Rhythmbox 2.x**.
 
-## Authors
+## Companion plugin
 
- - asermax <asermax@gmail.com>, website - https://github.com/asermax
+CoverArt Browser requires the companion **CoverArt Search Providers** plugin:
 
-[![Flattr Button](http://api.flattr.com/button/button-compact-static-100x17.png "Flattr This!")](http://flattr.com/thing/1262052/asermax-on-GitHub "asermax")
+https://github.com/GenXinvenits/coverart-search-providers
 
- - fossfreedom <foss.freedom@gmail.com>, website - https://github.com/fossfreedom
+Install both plugins before activating CoverArt Browser in Rhythmbox.
 
-[![Flattr Button](http://api.flattr.com/button/button-compact-static-100x17.png "Flattr This!")](http://flattr.com/thing/1811704/ "fossfreedom")  [![paypaldonate](https://www.paypalobjects.com/en_GB/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=KBV682WJ3BDGL)
------------
+## Manual installation
 
-## Summary: whats new in this release
+No installer script or Makefile is required.
 
- - Allow switching between coverart-browser and the coverart-playlist sources via picture buttons on each source
- - tighter integration with Rhythmbox - addition of select and play using Rhythmbox's own toolbar play button 
- - Support the [alternative-toolbar](https://github.com/fossfreedom/alternative-toolbar) capability to hide/show the coverart-toolbar
- - Support for GTK 3.14
- - Support for the upcoming release of Rhythmbox (3.2)
- - Single click icon display position changes consistently depending upon the cover-tile style (shadow/no shadow etc.)
- - view/zoom/save the chosen cover - hover over the coverart on the track pane to reveal
- - coverart information in tile-view can be now left/centre & right aligned
- - Double click track & cover pane handle to open full height or to close
- - Play Next (album)- add the selected album(s) to be the next album after the current playing album
- - Play Next (track)- add the selected track(s) to be the next track after the current playing track
- - Track Artist and Artist Information Panes can be opened and closed via double-click of the pane-handle
- - Bottom Track & Cover Pane has more space - the expander & label has been removed
- - Tidied display - visible pane handles disappear after the plugin has been run 5 times 
- - Add ability to resize Icon-view with CTRL+mouse wheel scroll 
- - Translated into 27 languages and locales
- - for developers - doxygen documentation: http://fossfreedom.github.io/coverart-browser/classes.html
- - v2.1.1 - v2.1.2 - translation updates
+Install the plugin into the Rhythmbox per-user plugin directory:
 
-*How it works:*
+```bash
+rm -rf ~/.local/share/rhythmbox/plugins/coverart-browser
+git clone -b v3.4.9 https://github.com/GenXinvenits/coverart-browser.git ~/.local/share/rhythmbox/plugins/coverart-browser
+```
 
- - Click the new CoverArt Browser source button (left hand side of screen)
- - Albums are displayed as clickable buttons containing their album cover
- - Right click menu option to play, queue & search for coverart for an album.
- - Download Album & artist artwork via the properties toolbar button
- 
- - https://github.com/fossfreedom/coverart-browser/wiki/how-to-for-version-2.0
- - https://github.com/fossfreedom/coverart-browser/wiki/Screenshots
+Install the companion search-provider plugin in the same way:
 
-*How to install - Rhythmbox 3.0 and later:*
+```bash
+rm -rf ~/.local/share/rhythmbox/plugins/coverart-search-providers
+git clone -b v3.4.9 https://github.com/GenXinvenits/coverart-search-providers.git ~/.local/share/rhythmbox/plugins/coverart-search-providers
+```
 
-N.B. for earlier Rhythmbox versions use version 1.x
+### GSettings schema
 
-Prerequisite is to use a distribution supporting GTK 3.10 or later - for example, Ubuntu 14.04, Arch or Fedora 20
+CoverArt Browser uses a GSettings schema. Install and compile it once:
 
-for Debian & Debian-based distros such as Ubuntu & Mint:
+```bash
+sudo cp ~/.local/share/rhythmbox/plugins/coverart-browser/schema/org.gnome.rhythmbox.plugins.coverart_browser.gschema.xml /usr/share/glib-2.0/schemas/
+sudo glib-compile-schemas /usr/share/glib-2.0/schemas/
+```
 
-    sudo apt-get install git gettext python3-mako gir1.2-notify-0.7 python3-lxml python3-gi-cairo python3-cairo gstreamer1.0-plugins-ugly gstreamer1.0-plugins-good gstreamer1.0-plugins-bad rhythmbox-plugins gir1.2-webkit-3.0
+Then restart Rhythmbox and enable **CoverArt Browser** from **Edit → Plugins**.
 
-for Fedora and similar:
+## Translations
 
-    sudo yum install git gettext python3-mako python3-lxml python3-cairo webkitgtk3
+The `po/` directory contains the plugin's translation catalogs. These are part of the plugin's internationalization support and are kept in the repository.
 
-NOTE: it is assumed that you have separately installed the patent encumbered codecs found in the good/bad & ugly packages
-To install the plugin:
+The old translation installation helper scripts have been removed. If you want to install the translations manually, compile the catalogs with `msgfmt`, for example:
 
-<pre>
-rm -rf ~/.local/share/rhythmbox/plugins/coverart_browser
-git clone https://github.com/fossfreedom/coverart-browser.git
-cd coverart-browser
-./install.sh
-</pre>
+```bash
+cd ~/.local/share/rhythmbox/plugins/coverart-browser/po
+sudo install -d /usr/share/locale/en_US/LC_MESSAGES
+sudo msgfmt -c en_US.po -o /usr/share/locale/en_US/LC_MESSAGES/coverart_browser.mo
+```
 
-*Support for Debian 12 (Bookworm):*
+Repeat for any other locale you want to install.
 
-To make it work on Debian 12 (Bookworm), you need to add the stretch repository (as the necessary packages stopped at stretch). Don't worry, this tip has already been tested and it doesn't break the system.
+## Features
 
-<pre>
-echo "deb https://archive.debian.org/debian/ stretch main" | sudo tee -a /etc/apt/sources.list
-sudo apt update
-sudo apt install gir1.2-webkit-3.0
-</pre>
+- Browse albums using their cover artwork.
+- Play or queue albums and tracks from the cover browser.
+- Tile, list, and cover-flow views.
+- Album and artist artwork support.
+- Configurable cover size, sorting, display, and flow options.
+- Integration with Rhythmbox's library, queue, and playback controls.
+- Support for external Rhythmbox plugins such as Alternative Toolbar.
+- Translated into multiple languages.
 
+## Development
 
-*Support for Ubuntu 20.04:*
+The `po/` directory contains the translation source files and `update_all_po.sh`, which is retained for translation development. It is not required for normal plugin installation.
 
-To make it work on Ubuntu 20.04, you need to add the bionic (ubuntu 18.04) repository (as the necessary packages stopped at bionic). Don't worry, this tip has already been tested and it doesn't break the system.
+## Credits
 
-<pre>
-echo "deb http://de.archive.ubuntu.com/ubuntu/ bionic main universe" | sudo tee -a /etc/apt/sources.list
-sudo apt update
-sudo apt-get install git gettext python3-mako gir1.2-notify-0.7 python3-lxml python3-gi-cairo python3-cairo gstreamer1.0-plugins-ugly gstreamer1.0-plugins-good gstreamer1.0-plugins-bad rhythmbox-plugins gir1.2-webkit-3.0
-</pre>
+Original CoverArt Browser authors:
 
-To uninstall the plugin:
+- Agustín Carrasco (asermax)
+- fossfreedom
 
-<pre>
-cd coverart-browser
-./install.sh --uninstall
-</pre>
+The plugin incorporates work from the original Rhythmbox CoverArt Browser project and other open-source projects. See `LICENSE.txt` and the `coverflow/LICENSE` file for licensing information.
 
-Note 1 - the CoverArt Browser plugin also requires installing the following plugin:
+## License
 
- - https://github.com/fossfreedom/coverart-search-providers
-
-*For Ubuntu 14.04 and later:*
-
-V2.1.2 is now available in my rhythmbox PPA - installation instructions in this AskUbuntu Q&A:
-
-http://askubuntu.com/questions/147942/how-do-i-install-third-party-rhythmbox-plugins
-
-Note - installing the package `rhythmbox-plugin-coverart-browser` will also install `rhythmbox-plugin-coverart-search`
-
-**Please help out with translating**
-
-We need you to help us translate the english text to your native language.
-
-Don't worry - it is easier that you think. Just visit:
-
- - https://translations.launchpad.net/coverartbrowser
-
-Remember to set your preferred language and then just submit your translation.
-
--------
-
-Credits:
-
- - thanks to Luqman Aden <laden@uwaterloo.ca> for the coverart-search plugin which our cover-search pane is based upon
- - thanks to Canonical for the Star widget which the ratings capabilities use
- - our Translators: Launchpad Translation team - individual credits for each locale is shown in the plugin preferences dialog
- - Button Icons - [jrbastien](https://github.com/jrbastien) for the five toolbar icon-sets
- - Flow view is based upon [Contentflow](http://jacksasylum.eu/ContentFlow)
-
- Licenses:
-
- This plugin code is released under the GPL3+ license.
- 
- Contentflow source is released under the MIT license
-
- All translations are released under the BSD license
-
- Genre icon-set:
- 
- <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-nd/3.0/80x15.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/StillImage" property="dct:title" rel="dct:type">Music Genre Icons</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://meghnlofing.com" property="cc:attributionName" rel="cc:attributionURL">Meghn Lofing</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License</a>
-
-Contrast of the iconset has been altered as agreed by the author.  Thanks Meghn!
-
-------
-
-GTK3 port of code.google.com/p/rhythmbox-cover-art-browser
+CoverArt Browser is released under the GPLv3+ license. Components included from other projects retain their respective licenses.
