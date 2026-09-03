@@ -24,7 +24,7 @@ the base model for the plugin to work on top of.
 
 from datetime import datetime, date
 import os
-import cgi
+import html
 import tempfile
 import gc
 
@@ -33,9 +33,12 @@ from gi.repository import GObject
 from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import Gtk
+import cairo
+import gi
+gi.require_foreign("cairo")
+gi.require_version("Gdk", "3.0")
 from gi.repository import Gdk
 from gi.repository import GdkPixbuf
-import cairo
 
 from coverart_browser_prefs import GSetting
 from coverart_utils import create_pixbuf_from_file_at_size
@@ -1768,7 +1771,7 @@ class TextManager(GObject.Object):
         Utility function that creates the tooltip for this album to set into
         the model.
         '''
-        return cgi.escape(rb3compat.unicodeencode(_('%s by %s'), 'utf-8') % (album.name,
+        return html.escape(rb3compat.unicodeencode(_('%s by %s'), 'utf-8') % (album.name,
                                                                              album.artists))
 
     def _generate_markup_text(self, model, album):

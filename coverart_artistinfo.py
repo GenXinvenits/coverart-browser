@@ -25,7 +25,10 @@ import json
 import gettext
 
 from mako.template import Template
-from gi.repository import WebKit
+import gi
+
+gi.require_version('WebKit2', '4.1')
+from gi.repository import WebKit2
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Gdk
@@ -62,7 +65,7 @@ LASTFM_NO_ACCOUNT_ERROR = _(
     "Enable LastFM plugin and log in first")
 
 
-class ArtistInfoWebView(WebKit.WebView):
+class ArtistInfoWebView(WebKit2.WebView):
     def __init(self, *args, **kwargs):
         super(ArtistInfoWebView, self).__init__(*args, **kwargs)
 
@@ -70,7 +73,7 @@ class ArtistInfoWebView(WebKit.WebView):
         self.source = source
         self.shell = shell
 
-        self.connect("navigation-requested", self.navigation_request_cb)
+        self.connect("decide-policy", self.navigation_policy_cb)
         self.connect("notify::title", self.view_title_change)
 
     def view_title_change(self, webview, param):
@@ -91,20 +94,30 @@ class ArtistInfoWebView(WebKit.WebView):
             self.source.album_manager.model.remove_filter('similar_artist')
         print("end view_title_change")
 
-    def navigation_request_cb(self, view, frame, request):
+    def navigation_policy_cb(self, view, decision, decision_type):
         # open HTTP URIs externally.  this isn't a web browser.
-        print("navigation_request_cb")
-        if request.get_uri().startswith('http'):
-            print("opening uri %s" % request.get_uri())
-            Gtk.show_uri(self.shell.props.window.get_screen(), request.get_uri(), Gdk.CURRENT_TIME)
+        print("navigation_policy_cb")
 
-            return 1  # WEBKIT_NAVIGATION_RESPONSE_IGNORE
-        else:
-            return 0  # WEBKIT_NAVIGATION_RESPONSE_ACCEPT
+        if decision_type == WebKit2.PolicyDecisionType.NAVIGATION_ACTION:
+            request = decision.get_navigation_action().get_request()
+            uri = request.get_uri()
+
+            if uri and uri.startswith('http'):
+                print("opening uri %s" % uri)
+                Gtk.show_uri(
+                    self.shell.props.window.get_screen(),
+                    uri,
+                    Gdk.CURRENT_TIME
+                )
+                decision.ignore()
+                return True
+
+        decision.use()
+        return True
 
     def do_button_release_event(self, *args):
         print("do_release_button")
-        WebKit.WebView.do_button_release_event(self, *args)
+        WebKit2.WebView.do_button_release_event(self, *args)
 
         return True
 
@@ -438,12 +451,12 @@ class BaseInfoView(GObject.Object):
     def load_view(self):
         print("load_view")
         print(self.file)
-        self.webview.load_string(self.file, 'text/html', 'utf-8', self.basepath)
+        self.webview.load_html(self.file, self.basepath)
         print("end load_view")
 
     def blank_view(self):
         render_file = self.empty_template.render(stylesheet=self.styles)
-        self.webview.load_string(render_file, 'text/html', 'utf-8', self.basepath)
+        self.webview.load_html(render_file, self.basepath)
 
     def loading(self, current_artist, current_album_title):
         pass
@@ -478,7 +491,7 @@ class ArtistInfoView(BaseInfoView):
             info=_("Loading biography for %s") % current_artist,
             song="",
             basepath=self.basepath)
-        self.webview.load_string(self.loading_file, 'text/html', 'utf-8', self.basepath)
+        self.webview.load_html(self.loading_file, self.basepath)
 
     def load_tmpl(self):
         cl = CoverLocale()
@@ -786,7 +799,7 @@ class LinksDataSource(GObject.GObject):
         """
         print("get_artist_links")
         artist = self.get_artist()
-        if artist is not "" and artist is not None:
+        if artist != "" and artist is not None:
             wpartist = artist.replace(" ", "_")
             artist = urllib.parse.quote_plus(artist)
             artist_links = {
@@ -808,7 +821,7 @@ class LinksDataSource(GObject.GObject):
         print("get_album_links")
         album = self.get_album()
         print(album)
-        if album is not None and album is not "":
+        if album is not None and album != "":
             print("obtaining links")
             wpalbum = album.replace(" ", "_")
             album = urllib.parse.quote_plus(album)
@@ -821,7 +834,7 @@ class LinksDataSource(GObject.GObject):
         return None
 
     def get_error(self):
-        if self.get_artist() is "":
+        if self.get_artist() == "":
             return _("No artist specified.")
 
 
@@ -845,7 +858,7 @@ class AlbumInfoView(BaseInfoView):
             info=_("Loading top albums for %s") % current_artist,
             song="",
             basepath=self.basepath)
-        self.webview.load_string(self.loading_file, 'text/html', 'utf-8', self.basepath)
+        self.webview.load_html(self.loading_file, self.basepath)
 
     def load_tmpl(self):
         cl = CoverLocale()

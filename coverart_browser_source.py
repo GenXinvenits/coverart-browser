@@ -84,6 +84,7 @@ class CoverArtBrowserSource(RB.Source):
         self.follow_song = False
         self.task_progress = None
         self._from_paned_handle = 0
+        self.status = ''
 
     def _connect_properties(self):
         '''

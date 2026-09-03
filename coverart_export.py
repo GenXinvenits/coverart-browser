@@ -134,7 +134,7 @@ class CoverArtExport(GObject.Object):
                 if sys.platform == 'win32':
                     import winreg
 
-                    path = r('SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon')
+                    path = r('SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon')
                     for root in (winreg.HKEY_CURRENT_USER, winreg.HKEY_LOCAL_MACHINE):
                         try:
                             with winreg.OpenKey(root, path) as k:

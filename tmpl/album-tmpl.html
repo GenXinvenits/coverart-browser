@@ -2,7 +2,7 @@
 <html> <head> <meta http-equiv="content-type" content="text-html; charset=utf-8">
 <%!
     import re
-    import cgi
+    import html
     import email.utils
     from gettext import ngettext
 
@@ -66,7 +66,7 @@
 %>
     <h1>
     ## TRANSLATORS: where %s is the artist name - for example "Top Albums by Michael Jackson"
-    ${ _("Top albums by %s") % ("<em>" + cgi.escape(artist, True) + "</em>") }</h1>
+    ${ _("Top albums by %s") % ("<em>" + html.escape(artist, True) + "</em>") }</h1>
 %for i, entry in enumerate(albums) :
     <%
     if 'tracklist' not in entry or len(entry['tracklist']) == 0:

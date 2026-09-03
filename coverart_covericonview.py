@@ -25,6 +25,8 @@ from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Gio
 from gi.repository import Pango
+import gi
+gi.require_version("PangoCairo", "1.0")
 from gi.repository import PangoCairo
 from gi.repository import GdkPixbuf
 

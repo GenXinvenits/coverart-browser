@@ -84,12 +84,11 @@ class CoverSearchPane(Gtk.Box):
         Initializes the pane ui.
         '''
         # ---- set up webkit pane -----#
-        from gi.repository import WebKit
+        import gi
+        gi.require_version('WebKit2', '4.1')
+        from gi.repository import WebKit2
 
-        self.webview = WebKit.WebView()
-        settings = self.webview.get_settings()
-        settings.set_property('enable-default-context-menu', False)
-        self.webview.set_settings(settings)
+        self.webview = WebKit2.WebView()
         scroll = Gtk.ScrolledWindow()
         scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         scroll.add(self.webview)
@@ -148,8 +147,7 @@ class CoverSearchPane(Gtk.Box):
                                          stylesheet=self.styles, selection_color=self.selection_color)
 
         print("here")
-        self.webview.load_string(temp_file, 'text/html', 'utf-8',
-                                 self.basepath)
+        self.webview.load_html(temp_file, self.basepath)
 
     def render_artist_art_search(self, artist):
         '''
@@ -159,8 +157,7 @@ class CoverSearchPane(Gtk.Box):
                                                 stylesheet=self.styles, selection_color=self.selection_color)
 
         print("here")
-        self.webview.load_string(temp_file, 'text/html', 'utf-8',
-                                 self.basepath)
+        self.webview.load_html(temp_file, self.basepath)
 
     def clear(self):
         '''
@@ -169,8 +166,7 @@ class CoverSearchPane(Gtk.Box):
         self.current_searchobject = None
         temp_file = self.empty_template.render(stylesheet=self.styles)
 
-        self.webview.load_string(temp_file, 'text/html', 'utf-8',
-                                 self.basepath)
+        self.webview.load_html(temp_file, self.basepath)
 
     def set_cover(self, webview, arg):
         '''

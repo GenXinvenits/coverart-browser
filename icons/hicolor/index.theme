@@ -1,0 +1,11 @@
+[Icon Theme]
+Name=CoverArt Browser
+Comment=CoverArt Browser icons
+Directories=scalable/symbolic/apps
+
+[scalable/symbolic/apps]
+Size=16
+Type=Scalable
+MinSize=8
+MaxSize=64
+Context=Applications

@@ -76,9 +76,10 @@ class CoverFlowView(AbstractView):
 
         self.show_policy = FlowShowingPolicy(self)
         if webkit_support():
-            from gi.repository import WebKit
-
-            self.view = WebKit.WebView()
+            import gi
+            gi.require_version('WebKit2', '4.1')
+            from gi.repository import WebKit2
+            self.view = WebKit2.WebView()
         else:
             self.view = None
 
@@ -204,7 +205,7 @@ class CoverFlowView(AbstractView):
         base = os.path.dirname(path) + "/"
         Gdk.threads_enter()
         print(string)
-        self.view.load_string(string, "text/html", "UTF-8", "file://" + base)
+        self.view.load_html(string, "file://" + base)
         Gdk.threads_leave()
 
         if self._on_first_use:
@@ -356,7 +357,7 @@ class FlowControl(object):
         obj['caption'] = album.name
         obj['identifier'] = str(index)
 
-        webview.execute_script("update_album('%s')" % json.dumps(obj))
+        webview.run_javascript("update_album(%s)" % json.dumps(json.dumps(obj)), None, None, None)
 
     def receive_message_signal(self, webview, param):
         # this will be key to passing stuff back and forth - need
@@ -389,7 +390,7 @@ class FlowControl(object):
     def scroll_to_album(self, album, webview):
         for row in self.album_identifier:
             if self.album_identifier[row] == album:
-                webview.execute_script("scroll_to_identifier('%s')" % str(row))
+                webview.run_javascript("scroll_to_identifier(%s)" % json.dumps(str(row)), None, None, None)
                 break
 
     def initialise(self, model, max_covers):

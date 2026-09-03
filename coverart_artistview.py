@@ -387,10 +387,10 @@ class ArtistsModel(GObject.Object):
 
         tooltip = rb3compat.unicodestr(tooltip, 'utf-8')
         tooltip = rb3compat.unicodeencode(tooltip, 'utf-8')
-        import cgi
+        import html
 
         formatted = '<b><i>' + \
-                    cgi.escape(rb3compat.unicodedecode(tooltip, 'utf-8')) + \
+                    html.escape(rb3compat.unicodedecode(tooltip, 'utf-8')) + \
                     '</i></b>' + \
                     year + \
                     ' ' + rating + \
