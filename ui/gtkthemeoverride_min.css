@@ -1,13 +1,28 @@
 .pane-separator:prelight#vertical_paned {
-  background-image: linear-gradient(to left, transparent, transparent 1px, #555 1px, #555 4px, transparent 4px);
+  background-image: linear-gradient(to left, transparent, transparent 1px, @theme_unfocused_fg_color 1px, @theme_unfocused_fg_color 3px, transparent 3px);
   background-size: 100% 15%;
   background-repeat: no-repeat;
   background-position: center;
 }
 
 .pane-separator:prelight#horizontal_paned {
-  background-image: linear-gradient(transparent, transparent 1px, #555 1px, #555 4px, transparent 4px);
+  background-image: linear-gradient(transparent, transparent 1px, @theme_unfocused_fg_color 1px, @theme_unfocused_fg_color 3px, transparent 3px);
   background-size: 40px auto;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+#iconview_overlay,
+#scrolled_window {
+  border-radius: 0;
+}
+
+#scrolled_window > viewport {
+  padding: 8px;
+}
+
+iconview.view {
+  -GtkIconView-item-padding: 6;
+  -GtkIconView-row-spacing: 12;
+  -GtkIconView-column-spacing: 12;
 }
