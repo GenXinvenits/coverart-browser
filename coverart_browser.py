@@ -27,10 +27,12 @@ coverart_utils.uniquify_and_sort = _fast_uniquify_and_sort
 coverart_album.uniquify_and_sort = _fast_uniquify_and_sort
 
 
-# Album.add_track() used to emit "modified" for every track. During initial
-# library construction this can cause a large amount of redundant model/UI
-# work. Coalesce those notifications into one idle callback per album.
+# Album.add_track() used to emit "modified" for every track. Keep the first
+# notification synchronous so a newly created album is visible immediately,
+# then coalesce subsequent notifications into one idle callback per album.
 def _fast_album_add_track(self, track):
+    was_empty = not self._tracks
+
     self._tracks.append(track)
     ids = (
         track.connect('modified', self._track_modified),
@@ -38,7 +40,9 @@ def _fast_album_add_track(self, track):
     )
     self._signals_id[track] = ids
 
-    if not getattr(self, '_opti_modified_idle_id', 0):
+    if was_empty:
+        self.emit('modified')
+    elif not getattr(self, '_opti_modified_idle_id', 0):
         self._opti_modified_idle_id = coverart_album.GLib.idle_add(
             _emit_album_modified, self)
 
