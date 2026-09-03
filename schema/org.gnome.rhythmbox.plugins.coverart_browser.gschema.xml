@@ -1,235 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
     <schema path="/org/gnome/rhythmbox/plugins/coverart_browser/" id="org.gnome.rhythmbox.plugins.coverart_browser">
-        <key type="i" name="cover-size">
-            <default>150</default>
-            <summary>Covers size in pixels.</summary>
-            <description>Defines the size for the covers showed on the source.</description>
-        </key>
-        <key type="b" name="add-shadow">
-            <default>false</default>
-            <summary>Add shadow to album's covers</summary>
-            <description>Indicates if the albums should drop a shadow on the cover view</description>
-        </key>
-        <key type="s" name="shadow-image">
-            <default>"above"</default>
-            <summary>Shadow image to be used behind album's covers</summary>
-            <description>The shadow image used behind the album's cover allows to give the effect as if the light source were in a determined position</description>
-        </key>
-        <key type="b" name="custom-statusbar">
-            <default>false</default>
-            <summary>If the plugin source's custom status bar should be used.</summary>
-            <description>Determines if the plugin should use the source's custom statusbar to show the current selected album's related information instead of the global Rhythmbox's statusbar.</description>
-        </key>
-        <key type="b" name="display-text">
-            <default>true</default>
-            <summary>Display album's information</summary>
-            <description>Show the album's basic information</description>
-        </key>
-        <key type="b" name="display-text-pos">
-            <default>true</default>
-            <summary>Display album's info position</summary>
-            <description>True is under the cover, False is within the cover.</description>
-        </key>
-        <key type="b" name="display-text-ellipsize">
-            <default>true</default>
-            <summary>Ellipsize albums names</summary>
-            <description>Ellipsizes the albums names to a fixed length when the display text option is enabled.</description>
-        </key>
-        <key type="u" name="display-text-ellipsize-length">
-            <default>13</default>
-            <summary>Maximum length for the ellipsizing</summary>
-            <description>This is the maximum allowed size for an album's name before being ellipsized.</description>
-        </key>
-        <key type="u" name="display-font-size">
-            <default>9</default>
-            <summary>Text font size</summary>
-            <description>This is font size for the album text below the cover-art.</description>
-        </key>
-        <key type="i" name="paned-position">
-            <default>0</default>
-            <summary>Position of paned handle</summary>
-            <description>Position of the horizontal paned-handle divider.</description>
-        </key>
-        <key type="s" name="sort-by">
-          <default>'name'</default>
-            <summary>sort by albums</summary>
-            <description>Sort by criteria for albums.</description>
-        </key>
-        <key type="b" name="sort-order">
-            <default>true</default>
-            <summary>Sort in ascending/descending order for albums.</summary>
-            <description>Using the chosen sort type, sort the coverview in either ascending or descending order.</description>
-        </key>
-        <key type="s" name="sort-by-artist">
-          <default>'name_artist'</default>
-            <summary>sort by criteria for artist albums</summary>
-            <description>Sort by criteria for artist albums.</description>
-        </key>
-        <key type="b" name="sort-order-artist">
-            <default>true</default>
-            <summary>Sort in ascending/descending order for artist albums.</summary>
-            <description>Using the chosen sort type, sort the artistview albums in either ascending or descending order.</description>
-        </key>
-        <key type="d" name="rating-threshold">
-            <default>0</default>
-            <summary>Track Rating Threshold.</summary>
-            <description>Level above which is regarded as a favourite rated track.</description>
-        </key>
-        <key type="b" name="autostart">
-            <default>false</default>
-            <summary>Automatically Start</summary>
-            <description>When rhythmbox starts, switch automatically to the coverart browser.</description>
-        </key>
-        <key type="s" name="toolbar-pos">
-            <default>'main'</default>
-            <summary>Toolbar position.</summary>
-            <description>Indicates where the toolbar should be shown. "main" is for the cover view, "left" for the left sidebar and "right" for the right sidebar.</description>
-        </key>
-        <key type="b" name="sort-by-rating">
-            <default>false</default>
-            <summary>Sort by rating</summary>
-            <description>Determines if the coverview should be sorted by album rating.</description>
-        </key>
-        <key type="b" name="sort-by-year">
-            <default>false</default>
-            <summary>Sort by year</summary>
-            <description>Determines if the coverview should be sorted by album-year.</description>
-        </key>
-        <key type="b" name="year-sort-visible">
-            <default>false</default>
-            <summary>Year sort visibility</summary>
-            <description>Determines if the year sorting option should be visible.</description>
-        </key>
-        <key type="b" name="rating-sort-visible">
-            <default>false</default>
-            <summary>Rating sort visibility</summary>
-            <description>Determines if the rating sorting option should be visible.</description>
-        </key>
-        <key type="b" name="genre-filter-visible">
-            <default>true</default>
-            <summary>Genre filter visibility</summary>
-            <description>Determines if the genre filter should be visible.</description>
-        </key>
-        <key type="b" name="button-relief">
-            <default>true</default>
-            <summary>Button Style</summary>
-            <description>True for a flat button style.</description>
-        </key>
-        <key type="s" name="theme">
-            <default>'lighter'</default>
-            <summary>Icon Theme</summary>
-            <description>Name of the chosen theme.</description>
-        </key>
-        <key type="b" name="new-genre-icon">
-            <default>false</default>
-            <summary>System Toggle</summary>
-            <description>Plugin toggles this to indicate a new genre - it has no real meaning other than to fire a signal when the state is changed.</description>
-        </key>
-        <key type="i" name="icon-padding">
-            <default>8</default>
-            <summary>icon view item-padding</summary>
-            <description>icon view item-padding</description>
-        </key>
-        <key type="i" name="icon-spacing">
-            <default>18</default>
-            <summary>icon view spacing (rows and columns)</summary>
-            <description>icon view (rows and columns)</description>
-        </key>
-        <key type="b" name="icon-automatic">
-            <default>false</default>
-            <summary>Open and close track-view on click.</summary>
-            <description>When clicking the iconview automatically show or hide the track-view</description>
-        </key>
-        <key type="s" name="view-name">
-            <default>'coverview'</default>
-            <summary>Name of view.</summary>
-            <description>View name to start with when the plugin is initialised.</description>
-        </key>
-        <key type="s" name="flow-appearance">
-            <default>'coverflow'</default>
-            <summary>Name of the type of coverflow.</summary>
-            <description>Coverflow type.</description>
-        </key>
-        <key type="b" name="flow-hide-caption">
-            <default>false</default>
-            <summary>Hide flow caption.</summary>
-            <description>Whether to hide the caption on the coverflow.</description>
-        </key>
-        <key type="i" name="flow-scale">
-            <default>170</default>
-            <summary>Scale Size.</summary>
-            <description>Percentage size for the coverflow image from 100% to 200%.</description>
-        </key>
-        <key type="s" name="flow-background-colour">
-            <default>'W'</default>
-            <summary>Colour of the background.</summary>
-            <description>W is white B is Black.</description>
-        </key>
-        <key type="b" name="flow-automatic">
-            <default>false</default>
-            <summary>Open and close track-view on click.</summary>
-            <description>When clicking the flow picture automatically show or hide the track-view</description>
-        </key>
-        <key type="i" name="flow-width">
-            <default>600</default>
-            <summary>Width of coverflow.</summary>
-            <description>Width of the chosen coverflow in px.</description>
-        </key>
-        <key type="i" name="flow-max-albums">
-            <default>100</default>
-            <summary>Maximum number of albums.</summary>
-            <description>Total number of albums to display in the coverflow.</description>
-        </key>
-        <key type="i" name="random-queue">
-            <default>1</default>
-            <summary>Queue random-albums.</summary>
-            <description>Number of random albums to queue.</description>
-        </key>
-        <key type="b" name="webkit-support">
-            <default>true</default>
-            <summary>Support webkit functionality</summary>
-            <description>For some distros, webkit causes RB crashes and as such webkit-support and associated functionality can be turned off with this flag</description>
-        </key>
-        <key type="s" name="artist-paned-pos">
-            <default>"['coverview:150','artistview:0','coverflowview:150']"</default>
-            <summary>Position of the artist paned.</summary>
-            <description>Position of the artist paned.</description>
-        </key>
-        <key type="s" name="artist-info-paned-pos">
-            <default>"['coverview:0','artistview:250','coverflowview:0']"</default>
-            <summary>Position of the artist info paned.</summary>
-            <description>Position of the artist info paned.</description>
-        </key>
-        <key type="b" name="use-favourites">
-            <default>false</default>
-            <summary>Use favourites</summary>
-            <description>Play or Queue albums using rating favourites</description>
-        </key>
-        <key type="s" name="last-genre-folder">
-            <default>""</default>
-            <summary>The folder name last used from the genre file chooser</summary>
-            <description>The folder name last used from the genre file chooser</description>
-        </key>
-        <key type="b" name="entry-view-mode">
-            <default>true</default>
-            <summary>Type of entry-view to display</summary>
-            <description>Type of entry-view to display - compact or full</description>
-        </key>
-        <key type="b" name="following">
-            <default>false</default>
-            <summary>Album selection changes automatically when the playing song changes</summary>
-            <description>Album selection changes automatically when the playing song changes</description>
-        </key>
-        <key type="i" name="activations">
-            <default>0</default>
-            <summary>number of times the plugin has been activated</summary>
-            <description>number of times the plugin has been activated</description>
-        </key>
-        <key type="i" name="text-alignment">
-            <default>1</default>
-            <summary>alignment of coverart info</summary>
-            <description>Pango Alignment value</description>
-        </key>
+        <key type="i" name="cover-size"><default>200</default><summary>Covers size in pixels.</summary><description>Defines the size for the covers showed on the source.</description></key>
+        <key type="b" name="add-shadow"><default>false</default><summary>Add shadow to album's covers</summary><description>Indicates if the albums should drop a shadow on the cover view</description></key>
+        <key type="s" name="shadow-image"><default>"above"</default><summary>Shadow image to be used behind album's covers</summary><description>The shadow image used behind the album's cover allows to give the effect as if the light source were in a determined position</description></key>
+        <key type="b" name="custom-statusbar"><default>false</default><summary>If the plugin source's custom status bar should be used.</summary><description>Determines if the plugin should use the source's custom statusbar to show the current selected album's related information instead of the global Rhythmbox's statusbar.</description></key>
+        <key type="b" name="display-text"><default>true</default><summary>Display album's information</summary><description>Show the album's basic information</description></key>
+        <key type="b" name="display-text-pos"><default>true</default><summary>Display album's info position</summary><description>True is under the cover, False is within the cover.</description></key>
+        <key type="b" name="display-text-ellipsize"><default>true</default><summary>Ellipsize albums names</summary><description>Ellipsizes the albums names to a fixed length when the display text option is enabled.</description></key>
+        <key type="u" name="display-text-ellipsize-length"><default>13</default><summary>Maximum length for the ellipsizing</summary><description>This is the maximum allowed size for an album's name before being ellipsized.</description></key>
+        <key type="u" name="display-font-size"><default>9</default><summary>Text font size</summary><description>This is font size for the album text below the cover-art.</description></key>
+        <key type="i" name="paned-position"><default>0</default><summary>Position of paned handle</summary><description>Position of the horizontal paned-handle divider.</description></key>
+        <key type="s" name="sort-by"><default>'name'</default><summary>sort by albums</summary><description>Sort by criteria for albums.</description></key>
+        <key type="b" name="sort-order"><default>true</default><summary>Sort in ascending/descending order for albums.</summary><description>Using the chosen sort type, sort the coverview in either ascending or descending order.</description></key>
+        <key type="s" name="sort-by-artist"><default>'name_artist'</default><summary>sort by criteria for artist albums</summary><description>Sort by criteria for artist albums.</description></key>
+        <key type="b" name="sort-order-artist"><default>true</default><summary>Sort in ascending/descending order for artist albums.</summary><description>Using the chosen sort type, sort the artistview albums in either ascending or descending order.</description></key>
+        <key type="d" name="rating-threshold"><default>0</default><summary>Track Rating Threshold.</summary><description>Level above which is regarded as a favourite rated track.</description></key>
+        <key type="b" name="autostart"><default>false</default><summary>Automatically Start</summary><description>When rhythmbox starts, switch automatically to the coverart browser.</description></key>
+        <key type="s" name="toolbar-pos"><default>'main'</default><summary>Toolbar position.</summary><description>Indicates where the toolbar should be shown. "main" is for the cover view, "left" for the left sidebar and "right" for the right sidebar.</description></key>
+        <key type="b" name="sort-by-rating"><default>false</default><summary>Sort by rating</summary><description>Determines if the coverview should be sorted by album rating.</description></key>
+        <key type="b" name="sort-by-year"><default>false</default><summary>Sort by year</summary><description>Determines if the coverview should be sorted by album-year.</description></key>
+        <key type="b" name="year-sort-visible"><default>false</default><summary>Year sort visibility</summary><description>Determines if the year sorting option should be visible.</description></key>
+        <key type="b" name="rating-sort-visible"><default>false</default><summary>Rating sort visibility</summary><description>Determines if the rating sorting option should be visible.</description></key>
+        <key type="b" name="genre-filter-visible"><default>true</default><summary>Genre filter visibility</summary><description>Determines if the genre filter should be visible.</description></key>
+        <key type="b" name="button-relief"><default>true</default><summary>Button Style</summary><description>True for a flat button style.</description></key>
+        <key type="s" name="theme"><default>'lighter'</default><summary>Icon Theme</summary><description>Name of the chosen theme.</description></key>
+        <key type="b" name="new-genre-icon"><default>false</default><summary>System Toggle</summary><description>Plugin toggles this to indicate a new genre - it has no real meaning other than to fire a signal when the state is changed.</description></key>
+        <key type="i" name="icon-padding"><default>8</default><summary>icon view item-padding</summary><description>icon view item-padding</description></key>
+        <key type="i" name="icon-spacing"><default>18</default><summary>icon view spacing (rows and columns)</summary><description>icon view (rows and columns)</description></key>
+        <key type="b" name="icon-automatic"><default>false</default><summary>Open and close track-view on click.</summary><description>When clicking the iconview automatically show or hide the track-view</description></key>
+        <key type="s" name="view-name"><default>'coverview'</default><summary>Name of view.</summary><description>View name to start with when the plugin is initialised.</description></key>
+        <key type="s" name="flow-appearance"><default>'coverflow'</default><summary>Name of the type of coverflow.</summary><description>Coverflow type.</description></key>
+        <key type="b" name="flow-hide-caption"><default>false</default><summary>Hide flow caption.</summary><description>Whether to hide the caption on the coverflow.</description></key>
+        <key type="i" name="flow-scale"><default>170</default><summary>Scale Size.</summary><description>Percentage size for the coverflow image from 100% to 200%.</description></key>
+        <key type="s" name="flow-background-colour"><default>'W'</default><summary>Colour of the background.</summary><description>W is white B is Black.</description></key>
+        <key type="b" name="flow-automatic"><default>false</default><summary>Open and close track-view on click.</summary><description>When clicking the flow picture automatically show or hide the track-view</description></key>
+        <key type="i" name="flow-width"><default>600</default><summary>Width of coverflow.</summary><description>Width of the chosen coverflow in px.</description></key>
+        <key type="i" name="flow-max-albums"><default>100</default><summary>Maximum number of albums.</summary><description>Total number of albums to display in the coverflow.</description></key>
+        <key type="i" name="random-queue"><default>1</default><summary>Queue random-albums.</summary><description>Number of random albums to queue.</description></key>
+        <key type="b" name="webkit-support"><default>true</default><summary>Support webkit functionality</summary><description>For some distros, webkit causes RB crashes and as such webkit-support and associated functionality can be turned off with this flag</description></key>
+        <key type="s" name="artist-paned-pos"><default>"['coverview:150','artistview:0','coverflowview:150']"</default><summary>Position of the artist paned.</summary><description>Position of the artist paned.</description></key>
+        <key type="s" name="artist-info-paned-pos"><default>"['coverview:0','artistview:250','coverflowview:0']"</default><summary>Position of the artist info paned.</summary><description>Position of the artist info paned.</description></key>
+        <key type="b" name="use-favourites"><default>false</default><summary>Use favourites</summary><description>Play or Queue albums using rating favourites</description></key>
+        <key type="s" name="last-genre-folder"><default>""</default><summary>The folder name last used from the genre file chooser</summary><description>The folder name last used from the genre file chooser</description></key>
+        <key type="b" name="entry-view-mode"><default>true</default><summary>Type of entry-view to display</summary><description>Type of entry-view to display - compact or full</description></key>
+        <key type="b" name="following"><default>false</default><summary>Album selection changes automatically when the playing song changes</summary><description>Album selection changes automatically when the playing song changes</description></key>
+        <key type="i" name="activations"><default>0</default><summary>number of times the plugin has been activated</summary><description>number of times the plugin has been activated</description></key>
+        <key type="i" name="text-alignment"><default>1</default><summary>alignment of coverart info</summary><description>Pango Alignment value</description></key>
     </schema>
 </schemalist>
