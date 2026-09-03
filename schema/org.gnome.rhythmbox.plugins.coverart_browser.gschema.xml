@@ -2,7 +2,7 @@
 <schemalist>
     <schema path="/org/gnome/rhythmbox/plugins/coverart_browser/" id="org.gnome.rhythmbox.plugins.coverart_browser">
         <key type="i" name="cover-size">
-            <default>140</default>
+            <default>150</default>
             <summary>Covers size in pixels.</summary>
             <description>Defines the size for the covers showed on the source.</description>
         </key>
@@ -127,12 +127,12 @@
             <description>Plugin toggles this to indicate a new genre - it has no real meaning other than to fire a signal when the state is changed.</description>
         </key>
         <key type="i" name="icon-padding">
-            <default>6</default>
+            <default>8</default>
             <summary>icon view item-padding</summary>
             <description>icon view item-padding</description>
         </key>
         <key type="i" name="icon-spacing">
-            <default>12</default>
+            <default>18</default>
             <summary>icon view spacing (rows and columns)</summary>
             <description>icon view (rows and columns)</description>
         </key>
