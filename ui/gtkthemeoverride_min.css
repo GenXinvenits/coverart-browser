@@ -18,11 +18,23 @@
 }
 
 #scrolled_window > viewport {
-  padding: 8px;
+  padding: 10px 12px 12px 12px;
 }
 
+/* Windows Media Player-style album library */
 iconview.view {
-  -GtkIconView-item-padding: 6;
-  -GtkIconView-row-spacing: 12;
-  -GtkIconView-column-spacing: 12;
+  -GtkIconView-item-padding: 8;
+  -GtkIconView-row-spacing: 18;
+  -GtkIconView-column-spacing: 18;
+  padding: 4px;
+}
+
+iconview.view:selected,
+iconview.view:selected:focus {
+  border-radius: 6px;
+  outline: none;
+}
+
+iconview.view:hover {
+  outline: none;
 }
