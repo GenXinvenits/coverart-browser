@@ -22,7 +22,17 @@
 
 #iconview_overlay,
 #scrolled_window {
-  border-radius: 8px;
+  border-radius: 0;
+}
+
+#scrolled_window > viewport {
+  padding: 8px;
+}
+
+iconview.view {
+  -GtkIconView-item-padding: 6;
+  -GtkIconView-row-spacing: 12;
+  -GtkIconView-column-spacing: 12;
 }
 
 #quick_search_entry {
