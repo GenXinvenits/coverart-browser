@@ -38,12 +38,3 @@ class _CoverArtBrowserSourceStartupSafe(CoverArtBrowserSource):
 # globals of coverart_browser_legacy.py. Replace that reference before the
 # plugin instance is activated so the real GObject source subclass is used.
 coverart_browser_legacy.CoverArtBrowserSource = _CoverArtBrowserSourceStartupSafe
-
-
-def _disable_startup_autostart(self, *args, **kwargs):
-    """Never select CoverArt automatically after the Rhythmbox library loads."""
-    print("CoverArtBrowser DEBUG - automatic CoverArt selection disabled")
-    return None
-
-
-CoverArtBrowserPlugin.load_complete = _disable_startup_autostart
