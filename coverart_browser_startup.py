@@ -42,8 +42,8 @@ def _background_status(self, *args):
     return _original_source_do_get_status(self, *args)
 
 
-def _mark_initial_scan_complete(self, *args):
-    self._coverart_initial_scan_complete = True
+def _mark_initial_scan_complete(source):
+    source._coverart_initial_scan_complete = True
     print("CoverArtBrowser DEBUG - initial album scan/model load complete")
 
 
@@ -62,7 +62,8 @@ def _startup_guarded_do_selected(self, *args, **kwargs):
         self._coverart_initial_scan_complete = False
         try:
             self.album_manager.loader.connect(
-                'model-load-finished', _mark_initial_scan_complete, self)
+                'model-load-finished',
+                lambda *_args: _mark_initial_scan_complete(self))
         except Exception as error:
             print("CoverArtBrowser DEBUG - scan completion hook failed: %s" % error)
 
