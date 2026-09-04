@@ -22,6 +22,7 @@ from os.path import expanduser
 
 from gi.repository import RB
 from gi.repository import Gtk
+
 from gi.repository import GObject
 from gi.repository import GdkPixbuf
 from gi.repository import Gdk

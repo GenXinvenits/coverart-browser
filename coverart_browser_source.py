@@ -231,7 +231,7 @@ class CoverArtBrowserSource(RB.Source):
         overlay.add_overlay(self.notification_infobar)
 
         self.pack_start(overlay, True, True, 0)
-        self.page.reorder_child(overlay, 0)
+        self.reorder_child(overlay, 0)
 
         # get widgets for main icon-view
         self.status_label = ui.get_object('status_label')
