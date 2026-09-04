@@ -2,8 +2,8 @@
 
 The performance entry point remains in ``coverart_browser``.  This wrapper
 keeps the CoverArt source registered, prevents Rhythmbox's startup source
-restore from initializing the browser, and makes the first library scan a
-background operation after the CoverArt page has been displayed.
+restore from initializing the browser, and keeps CoverArt's internal album
+scan out of Rhythmbox's global loading/task bar.
 """
 
 from coverart_browser import *  # noqa: F401,F403
@@ -12,7 +12,6 @@ from coverart_album import AlbumLoader
 
 
 _original_source_do_selected = CoverArtBrowserSource.do_selected
-_original_source_do_get_status = CoverArtBrowserSource.do_get_status
 _original_load_albums = AlbumLoader.load_albums
 
 
@@ -29,22 +28,17 @@ def _background_load_albums(self, query_model):
         _original_load_albums(self, query_model)
         return False
 
-    # Give GTK/Rhythmbox a chance to paint the CoverArt page before the
-    # library traversal starts.  AlbumLoader itself remains idle/chunk based.
+    # Let GTK paint the CoverArt page first. AlbumLoader itself remains
+    # chunked/idle based, so the scan does not block the UI afterwards.
     GLib.timeout_add(100, start_scan)
 
 
-def _background_status(self, *args):
-    """Do not expose the initial album discovery as a Loading screen."""
-    if not getattr(self, '_coverart_initial_scan_complete', False):
-        return (self.status, '', 1)
-
-    return _original_source_do_get_status(self, *args)
-
-
-def _mark_initial_scan_complete(source):
-    source._coverart_initial_scan_complete = True
-    print("CoverArtBrowser DEBUG - initial album scan/model load complete")
+def _silent_get_status(self, *args):
+    """Never expose CoverArt's internal loading progress as a global task."""
+    # CoverArt has its own request/search status widgets. The album discovery
+    # and cached-art loading progress should not create Rhythmbox's global
+    # "Loading..." bar when the source is opened.
+    return (self.status, '', 1)
 
 
 def _startup_guarded_do_selected(self, *args, **kwargs):
@@ -55,19 +49,8 @@ def _startup_guarded_do_selected(self, *args, **kwargs):
         print("CoverArtBrowser DEBUG - startup source selection ignored")
         return None
 
-    first_activation = not self.hasActivated
-    result = _original_source_do_selected(self, *args, **kwargs)
-
-    if first_activation:
-        self._coverart_initial_scan_complete = False
-        try:
-            self.album_manager.loader.connect(
-                'model-load-finished',
-                lambda *_args: _mark_initial_scan_complete(self))
-        except Exception as error:
-            print("CoverArtBrowser DEBUG - scan completion hook failed: %s" % error)
-
-    return result
+    print("CoverArtBrowser DEBUG - manual CoverArt selection")
+    return _original_source_do_selected(self, *args, **kwargs)
 
 
 def _disable_startup_autostart(self, *args, **kwargs):
@@ -76,9 +59,8 @@ def _disable_startup_autostart(self, *args, **kwargs):
     print("CoverArtBrowser DEBUG - startup complete; autostart disabled")
 
     # If Rhythmbox restored CoverArt as the previous page before the library
-    # completed, move back to Library now.  This prevents the restored page
-    # from remaining in a half-initialized state and leaves manual selection
-    # available to the user afterwards.
+    # completed, move back to Library now. This leaves CoverArt available for
+    # explicit manual selection afterwards.
     try:
         if self.shell.props.selected_page == self.source:
             GLib.idle_add(
@@ -91,7 +73,9 @@ def _disable_startup_autostart(self, *args, **kwargs):
     return None
 
 
+# Keep the automatic library scan, but make it background work and completely
+# separate from Rhythmbox's global loading indicator.
 AlbumLoader.load_albums = _background_load_albums
-CoverArtBrowserSource.do_get_status = _background_status
+CoverArtBrowserSource.do_get_status = _silent_get_status
 CoverArtBrowserSource.do_selected = _startup_guarded_do_selected
 CoverArtBrowserPlugin.load_complete = _disable_startup_autostart
