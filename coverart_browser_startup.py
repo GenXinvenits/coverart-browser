@@ -9,10 +9,46 @@ scan out of Rhythmbox's global loading/task bar.
 from coverart_browser import *  # noqa: F401,F403
 from coverart_browser_source import CoverArtBrowserSource
 from coverart_album import AlbumLoader
+import coverart_browser_legacy
+from gi.repository import GLib
 
 
 _original_source_do_selected = CoverArtBrowserSource.do_selected
 _original_load_albums = AlbumLoader.load_albums
+
+
+class _CoverArtBrowserSourceNoGlobalTask(CoverArtBrowserSource):
+    """CoverArt source that never publishes its album scan as a global task."""
+
+    def do_get_status(self, *args):
+        """Keep CoverArt's library scan out of Rhythmbox's task list.
+
+        The legacy implementation creates RB.TaskProgressSimple here and
+        registers it with the shell task list while AlbumLoader is scanning.
+        That is the exact source of the bottom ``Loading...`` progress bar.
+        CoverArt has its own status/search UI, so exposing this internal scan
+        as a global Rhythmbox task is unnecessary.
+        """
+        return (self.status, '', 1)
+
+    def do_selected(self):
+        """Ignore source selection restored before Rhythmbox startup ends."""
+        plugin = getattr(self.props, 'plugin', None)
+
+        if plugin is not None and not getattr(plugin, '_startup_complete', False):
+            print("CoverArtBrowser DEBUG - startup source selection ignored")
+            return None
+
+        print("CoverArtBrowser DEBUG - manual CoverArt selection")
+        return super().do_selected()
+
+
+# The source is instantiated by CoverArtBrowserPlugin.do_activate() from the
+# legacy module's global namespace. Replace that symbol with the real GObject
+# subclass rather than monkey-patching the already-registered source vfuncs.
+# GObject virtual methods such as do_get_status are resolved through the class
+# type, so this is required for Rhythmbox to actually use the override.
+coverart_browser_legacy.CoverArtBrowserSource = _CoverArtBrowserSourceNoGlobalTask
 
 
 def _background_load_albums(self, query_model):
@@ -33,24 +69,9 @@ def _background_load_albums(self, query_model):
     GLib.timeout_add(100, start_scan)
 
 
-def _silent_get_status(self, *args):
-    """Never expose CoverArt's internal loading progress as a global task."""
-    # CoverArt has its own request/search status widgets. The album discovery
-    # and cached-art loading progress should not create Rhythmbox's global
-    # "Loading..." bar when the source is opened.
-    return (self.status, '', 1)
-
-
-def _startup_guarded_do_selected(self, *args, **kwargs):
-    """Ignore a CoverArt source selection restored during Rhythmbox startup."""
-    plugin = getattr(self.props, 'plugin', None)
-
-    if plugin is not None and not getattr(plugin, '_startup_complete', False):
-        print("CoverArtBrowser DEBUG - startup source selection ignored")
-        return None
-
-    print("CoverArtBrowser DEBUG - manual CoverArt selection")
-    return _original_source_do_selected(self, *args, **kwargs)
+# Keep the automatic library scan, but make it background work. Do not expose
+# its progress through Rhythmbox's global task list.
+AlbumLoader.load_albums = _background_load_albums
 
 
 def _disable_startup_autostart(self, *args, **kwargs):
@@ -73,9 +94,5 @@ def _disable_startup_autostart(self, *args, **kwargs):
     return None
 
 
-# Keep the automatic library scan, but make it background work and completely
-# separate from Rhythmbox's global loading indicator.
-AlbumLoader.load_albums = _background_load_albums
-CoverArtBrowserSource.do_get_status = _silent_get_status
-CoverArtBrowserSource.do_selected = _startup_guarded_do_selected
+# Keep the original plugin callback for the AUTOSTART preference disabled.
 CoverArtBrowserPlugin.load_complete = _disable_startup_autostart
