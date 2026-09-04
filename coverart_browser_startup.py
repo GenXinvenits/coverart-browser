@@ -44,3 +44,25 @@ class _CoverArtBrowserSourceStartupSafe(CoverArtBrowserSource):
 # globals of coverart_browser_legacy.py. Replace that reference before the
 # plugin instance is activated so the startup-safe subclass is instantiated.
 coverart_browser_legacy.CoverArtBrowserSource = _CoverArtBrowserSourceStartupSafe
+
+
+# ResultsGrid.initialise() attaches the cover-art overlay immediately. The
+# normal change_view() path then attaches that same widget again when the
+# compact view is selected during initial source setup. GTK rejects attaching
+# a widget that already has a parent and emits a critical warning.
+#
+# Do not change the requested view state. If the overlay is already attached,
+# detach it first; the original change_view() implementation will then perform
+# its normal attach. This keeps the existing layout and view-switching logic
+# unchanged while preventing the duplicate-parent operation.
+_original_change_view = ResultsGrid.change_view
+
+
+def _safe_change_view(self, entry_view, show_coverart):
+    if show_coverart and self.overlay.get_parent() is self:
+        self.remove(self.overlay)
+
+    _original_change_view(self, entry_view, show_coverart)
+
+
+ResultsGrid.change_view = _safe_change_view
